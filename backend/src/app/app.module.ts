@@ -26,7 +26,10 @@ import { AdminModule } from '../admin/admin.module';
       useFactory: (configService: ConfigService) => ({
         type: 'sqlite',
         database: configService.get('DATABASE_PATH') || 'data/adhd-dashboard.db',
-        entities: [__dirname + '/**/*.entity{.ts,.js}'],
+        entities: [
+          __dirname + '/../**/*.entity{.ts,.js}',
+        ],
+        autoLoadEntities: true,
         synchronize: configService.get('NODE_ENV') !== 'production',
         logging: configService.get('NODE_ENV') === 'development',
       }),

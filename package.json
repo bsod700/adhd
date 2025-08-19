@@ -106,6 +106,7 @@
     "eslint": "^9.8.0",
     "eslint-config-prettier": "^10.0.0",
     "eslint-plugin-playwright": "^1.6.2",
+    "husky": "^9.1.7",
     "jest": "^30.0.2",
     "jest-environment-jsdom": "^30.0.2",
     "jest-environment-node": "^30.0.2",
@@ -120,5 +121,6 @@
     "typescript": "~5.8.2",
     "typescript-eslint": "^8.29.0",
     "webpack-cli": "^5.1.4"
-  }
+  },
+  "nx": {}
 }
