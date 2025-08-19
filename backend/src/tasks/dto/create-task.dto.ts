@@ -10,7 +10,7 @@ import {
   Max,
   ArrayMaxSize
 } from 'class-validator';
-import { Type } from 'class-transformer';
+
 import { 
   TaskPriority, 
   TaskDifficulty, 
@@ -21,7 +21,7 @@ import {
 export class CreateTaskDto {
   @ApiProperty({ description: 'Task title' })
   @IsString()
-  readonly title: string;
+  readonly title!: string;
 
   @ApiProperty({ description: 'Task description', required: false })
   @IsOptional()
@@ -30,23 +30,23 @@ export class CreateTaskDto {
 
   @ApiProperty({ description: 'Task priority', enum: TaskPriority })
   @IsEnum(TaskPriority)
-  readonly priority: TaskPriority;
+  readonly priority!: TaskPriority;
 
   @ApiProperty({ description: 'Task difficulty for ADHD users', enum: TaskDifficulty })
   @IsEnum(TaskDifficulty)
-  readonly difficulty: TaskDifficulty;
+  readonly difficulty!: TaskDifficulty;
 
   @ApiProperty({ description: 'Estimated duration in minutes', minimum: 1, maximum: 480 })
   @IsNumber()
   @Min(1)
   @Max(480) // Max 8 hours
-  readonly estimatedDuration: number;
+  readonly estimatedDuration!: number;
 
   @ApiProperty({ description: 'Task tags', type: [String] })
   @IsArray()
   @IsString({ each: true })
   @ArrayMaxSize(10)
-  readonly tags: readonly string[];
+  readonly tags!: readonly string[];
 
   @ApiProperty({ description: 'Due date', required: false })
   @IsOptional()

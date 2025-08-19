@@ -6,13 +6,13 @@ export class TaskReorderRequestDto {
   @IsArray()
   @IsString({ each: true })
   @ArrayMinSize(1)
-  readonly taskIds: readonly string[];
+  readonly taskIds!: readonly string[];
 
   @ApiProperty({ description: 'Current time context' })
   @IsString()
-  readonly currentTime: string;
+  readonly currentTime!: string;
 
   @ApiProperty({ description: 'User timezone' })
   @IsString()
-  readonly timeZone: string;
+  readonly timeZone!: string;
 } 

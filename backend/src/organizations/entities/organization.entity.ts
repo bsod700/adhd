@@ -12,7 +12,7 @@ import {
 export class Organization extends BaseEntity {
   @ApiProperty({ description: 'Organization name' })
   @Column()
-  name: string;
+  name!: string;
 
   @ApiProperty({ description: 'Organization description', required: false })
   @Column({ nullable: true, type: 'text' })
@@ -21,6 +21,10 @@ export class Organization extends BaseEntity {
   @ApiProperty({ description: 'Organization domain', required: false })
   @Column({ nullable: true })
   domain?: string;
+
+  @ApiProperty({ description: 'Organization subdomain', required: false })
+  @Column({ nullable: true, unique: true })
+  subdomain?: string;
 
   @ApiProperty({ description: 'Organization logo URL', required: false })
   @Column({ nullable: true })
@@ -52,10 +56,12 @@ export class Organization extends BaseEntity {
         faviconUrl: null,
         customCss: null
       },
-      integrations: {}
+      integrations: {},
+      allowUserRegistration: true,
+      defaultUserRole: 'user'
     })
   })
-  settings: OrganizationSettings;
+  settings!: OrganizationSettings;
 
   @ApiProperty({ description: 'Subscription information' })
   @Column({ 
@@ -72,21 +78,21 @@ export class Organization extends BaseEntity {
       features: ['basic_tasks', 'basic_ai']
     })
   })
-  subscription: SubscriptionInfo;
+  subscription!: SubscriptionInfo;
 
   @ApiProperty({ description: 'Whether organization is active' })
   @Column({ default: true })
-  isActive: boolean;
+  isActive!: boolean;
 
   @ApiProperty({ description: 'Current number of users' })
   @Column({ default: 0 })
-  userCount: number;
+  userCount!: number;
 
   @ApiProperty({ description: 'Admin user IDs' })
   @Column({ type: 'json', default: '[]' })
-  adminIds: string[];
+  adminIds!: string[];
 
   // Relations
   @OneToMany('User', 'organization')
-  users: any[];
+  users!: any[];
 } 

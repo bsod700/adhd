@@ -13,7 +13,7 @@ import {
 export class Task extends BaseEntity {
   @ApiProperty({ description: 'Task title' })
   @Column()
-  title: string;
+  title!: string;
 
   @ApiProperty({ description: 'Task description', required: false })
   @Column({ nullable: true, type: 'text' })
@@ -25,7 +25,7 @@ export class Task extends BaseEntity {
     enum: TaskStatus,
     default: TaskStatus.TODO 
   })
-  status: TaskStatus;
+  status!: TaskStatus;
 
   @ApiProperty({ description: 'Task priority', enum: TaskPriority })
   @Column({ 
@@ -33,7 +33,7 @@ export class Task extends BaseEntity {
     enum: TaskPriority,
     default: TaskPriority.MEDIUM 
   })
-  priority: TaskPriority;
+  priority!: TaskPriority;
 
   @ApiProperty({ description: 'Task difficulty for ADHD users', enum: TaskDifficulty })
   @Column({ 
@@ -41,11 +41,11 @@ export class Task extends BaseEntity {
     enum: TaskDifficulty,
     default: TaskDifficulty.MEDIUM 
   })
-  difficulty: TaskDifficulty;
+  difficulty!: TaskDifficulty;
 
   @ApiProperty({ description: 'Estimated duration in minutes' })
   @Column()
-  estimatedDuration: number;
+  estimatedDuration!: number;
 
   @ApiProperty({ description: 'Actual duration spent in minutes', required: false })
   @Column({ nullable: true })
@@ -53,7 +53,7 @@ export class Task extends BaseEntity {
 
   @ApiProperty({ description: 'Task tags' })
   @Column({ type: 'json', default: '[]' })
-  tags: string[];
+  tags!: string[];
 
   @ApiProperty({ description: 'Due date', required: false })
   @Column({ nullable: true })
@@ -65,7 +65,7 @@ export class Task extends BaseEntity {
 
   @ApiProperty({ description: 'User ID who owns this task' })
   @Column()
-  userId: string;
+  userId!: string;
 
   @ApiProperty({ description: 'Parent task ID for subtasks', required: false })
   @Column({ nullable: true })
@@ -99,5 +99,5 @@ export class Task extends BaseEntity {
   parentTask?: any;
 
   @OneToMany('Task', 'parentTask')
-  subtasks: any[];
+  subtasks!: any[];
 } 

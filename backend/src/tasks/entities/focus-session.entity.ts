@@ -6,11 +6,11 @@ import { BaseEntity } from '../../common/entities/base.entity';
 export class FocusSession extends BaseEntity {
   @ApiProperty({ description: 'Task ID this focus session is for' })
   @Column()
-  taskId: string;
+  taskId!: string;
 
   @ApiProperty({ description: 'Focus session start time' })
   @Column()
-  startTime: Date;
+  startTime!: Date;
 
   @ApiProperty({ description: 'Focus session end time', required: false })
   @Column({ nullable: true })
@@ -18,19 +18,19 @@ export class FocusSession extends BaseEntity {
 
   @ApiProperty({ description: 'Duration of focus session in minutes' })
   @Column()
-  duration: number;
+  duration!: number;
 
   @ApiProperty({ description: 'Focus score from 1-10' })
   @Column({ type: 'int' })
-  focusScore: number;
+  focusScore!: number;
 
   @ApiProperty({ description: 'Number of distractions during session' })
   @Column({ type: 'int', default: 0 })
-  distractions: number;
+  distractions!: number;
 
   @ApiProperty({ description: 'User ID who performed this focus session' })
   @Column()
-  userId: string;
+  userId!: string;
 
   // Relations
   @ManyToOne('User', 'focusSessions')

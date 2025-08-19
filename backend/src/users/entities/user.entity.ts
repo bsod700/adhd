@@ -8,8 +8,7 @@ import {
   AdhdProfile,
   TaskPriority,
   TaskDifficulty,
-  TaskContext,
-  MotivationStrategy
+  TaskContext
 } from '@adhd-dashboard/shared-types';
 
 @Entity('users')
@@ -17,20 +16,20 @@ import {
 export class User extends BaseEntity {
   @ApiProperty({ description: 'User email address' })
   @Column({ unique: true })
-  email: string;
+  email!: string;
 
   @ApiHideProperty()
   @Exclude()
   @Column()
-  password: string;
+  password!: string;
 
   @ApiProperty({ description: 'User first name' })
   @Column()
-  firstName: string;
+  firstName!: string;
 
   @ApiProperty({ description: 'User last name' })
   @Column()
-  lastName: string;
+  lastName!: string;
 
   @ApiProperty({ description: 'User avatar URL', required: false })
   @Column({ nullable: true })
@@ -42,11 +41,11 @@ export class User extends BaseEntity {
     enum: UserRole,
     default: UserRole.USER 
   })
-  role: UserRole;
+  role!: UserRole;
 
   @ApiProperty({ description: 'Whether user account is active' })
   @Column({ default: true })
-  isActive: boolean;
+  isActive!: boolean;
 
   @ApiProperty({ description: 'Last login timestamp', required: false })
   @Column({ nullable: true })
@@ -87,7 +86,7 @@ export class User extends BaseEntity {
       }
     })
   })
-  preferences: UserPreferences;
+  preferences!: UserPreferences;
 
   @ApiProperty({ description: 'ADHD-specific profile and settings' })
   @Column({ 
@@ -99,7 +98,7 @@ export class User extends BaseEntity {
       bestFocusTimeStart: '09:00',
       bestFocusTimeEnd: '11:00',
       distractionTriggers: [],
-      motivationStrategies: [MotivationStrategy.PROGRESS_VISUALIZATION],
+      motivationStrategies: ['progress_visualization'],
       sensoryPreferences: {
         preferredSounds: ['silence'],
         lightingPreference: 'natural',
@@ -108,15 +107,15 @@ export class User extends BaseEntity {
       }
     })
   })
-  adhdProfile: AdhdProfile;
+  adhdProfile!: AdhdProfile;
 
   // Relations using string references to avoid circular imports
   @ManyToOne('Organization', 'users', { nullable: true })
   organization?: any;
 
   @OneToMany('Task', 'user')
-  tasks: any[];
+  tasks!: any[];
 
   @OneToMany('FocusSession', 'user')
-  focusSessions: any[];
+  focusSessions!: any[];
 } 

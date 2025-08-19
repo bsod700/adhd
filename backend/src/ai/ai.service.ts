@@ -73,9 +73,10 @@ export class AiService {
         data: response
       };
     } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to generate AI suggestions';
       return {
         success: false,
-        message: error.message || 'Failed to generate AI suggestions'
+        message: errorMessage
       };
     }
   }
@@ -114,9 +115,10 @@ export class AiService {
         data: reorderSuggestion
       };
     } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to generate task reorder suggestion';
       return {
         success: false,
-        message: error.message || 'Failed to generate task reorder suggestion'
+        message: errorMessage
       };
     }
   }
@@ -149,9 +151,10 @@ export class AiService {
         data: insights
       };
     } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to generate productivity insights';
       return {
         success: false,
-        message: error.message || 'Failed to generate productivity insights'
+        message: errorMessage
       };
     }
   }
@@ -206,7 +209,7 @@ export class AiService {
     return suggestions.slice(0, maxSuggestions);
   }
 
-  private generatePrioritizationSuggestion(tasks: Task[], user: User): AiSuggestion | null {
+  private generatePrioritizationSuggestion(tasks: Task[], _user: User): AiSuggestion | null {
     const overdueTasks = tasks.filter(task => 
       task.dueDate && task.dueDate < new Date() && task.status !== TaskStatus.COMPLETED
     );
@@ -246,6 +249,10 @@ export class AiService {
     const [startHour, startMin] = bestFocusStart.split(':').map(Number);
     const [endHour, endMin] = bestFocusEnd.split(':').map(Number);
     
+    if (startHour === undefined || startMin === undefined || endHour === undefined || endMin === undefined) {
+      return null;
+    }
+    
     const focusStartMinutes = startHour * 60 + startMin;
     const focusEndMinutes = endHour * 60 + endMin;
 
@@ -281,6 +288,8 @@ export class AiService {
 
     if (largeTasks.length > 0) {
       const task = largeTasks[0];
+      if (!task) return null;
+      
       return {
         id: `breakdown-${Date.now()}`,
         type: SuggestionType.TASK_BREAKDOWN,
@@ -301,7 +310,7 @@ export class AiService {
     return null;
   }
 
-  private generateFocusStrategySuggestion(focusSessions: FocusSession[], user: User): AiSuggestion | null {
+  private generateFocusStrategySuggestion(focusSessions: FocusSession[], _user: User): AiSuggestion | null {
     if (focusSessions.length === 0) {
       return {
         id: `focus-${Date.now()}`,
@@ -379,7 +388,7 @@ export class AiService {
     return null;
   }
 
-  private generateMotivationSuggestion(tasks: Task[], user: User): AiSuggestion | null {
+  private generateMotivationSuggestion(tasks: Task[], _user: User): AiSuggestion | null {
     const completedTasks = tasks.filter(task => task.status === TaskStatus.COMPLETED);
     const totalTasks = tasks.length;
     const completionRate = totalTasks > 0 ? (completedTasks.length / totalTasks) * 100 : 0;
@@ -422,7 +431,7 @@ export class AiService {
   }
 
   private async generateTaskReorderSuggestion(
-    user: User,
+    _user: User,
     tasks: Task[],
     originalOrder: readonly string[],
     currentTime: Date
@@ -467,7 +476,7 @@ export class AiService {
       suggestedOrder: reorderedTasks,
       reasoning: [
         {
-          taskId: reorderedTasks[0],
+          taskId: reorderedTasks[0] || '',
           reason: 'High priority and due soon',
           factorsConsidered: ['priority', 'due_date', 'energy_level']
         }
@@ -477,7 +486,7 @@ export class AiService {
   }
 
   private async generateProductivityInsights(
-    user: User,
+    _user: User,
     tasks: Task[],
     focusSessions: FocusSession[]
   ): Promise<ProductivityInsight[]> {

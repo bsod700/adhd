@@ -1,6 +1,6 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, FindManyOptions, Between } from 'typeorm';
+import { Repository } from 'typeorm';
 
 import { 
   TaskStatus,
@@ -35,24 +35,37 @@ export class TasksService {
         }
       }
 
-      const task = this.taskRepository.create({
-        ...createTaskDto,
+      const taskData: any = {
+        title: createTaskDto.title,
+        description: createTaskDto.description,
+        priority: createTaskDto.priority,
+        difficulty: createTaskDto.difficulty,
+        estimatedDuration: createTaskDto.estimatedDuration,
+        tags: [...createTaskDto.tags],
         userId,
-        dueDate: createTaskDto.dueDate ? new Date(createTaskDto.dueDate) : undefined,
-        tags: createTaskDto.tags as string[], // Convert readonly array to mutable
-      });
+        parentTaskId: createTaskDto.parentTaskId,
+        energyLevel: createTaskDto.energyLevel,
+        context: createTaskDto.context
+      }
+      
+      if (createTaskDto.dueDate) {
+        taskData.dueDate = new Date(createTaskDto.dueDate);
+      }
+      
+      const task = this.taskRepository.create(taskData);
 
       const savedTask = await this.taskRepository.save(task);
 
       return {
         success: true,
-        data: savedTask,
+        data: Array.isArray(savedTask) ? savedTask[0]! : savedTask,
         message: 'Task created successfully'
       };
     } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to create task';
       return {
         success: false,
-        message: error.message || 'Failed to create task'
+        message: errorMessage
       };
     }
   }
@@ -83,7 +96,7 @@ export class TasksService {
 
     if (filters.tags?.length) {
       // SQLite JSON search
-      const tagConditions = filters.tags.map((tag, index) => 
+      const tagConditions = filters.tags.map((_tag, index) => 
         `JSON_EXTRACT(task.tags, '$') LIKE :tag${index}`
       );
       queryBuilder.andWhere(`(${tagConditions.join(' OR ')})`, 
@@ -161,9 +174,10 @@ export class TasksService {
         data: task
       };
     } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to fetch task';
       return {
         success: false,
-        message: error.message || 'Failed to fetch task'
+        message: errorMessage
       };
     }
   }
@@ -208,15 +222,22 @@ export class TasksService {
       await this.taskRepository.update(id, updateData);
       
       const updatedTaskResult = await this.findOne(id, userId);
+      if (!updatedTaskResult.success || !updatedTaskResult.data) {
+        return {
+          success: false,
+          message: 'Failed to retrieve updated task'
+        };
+      }
       return {
         success: true,
         data: updatedTaskResult.data,
         message: 'Task updated successfully'
       };
     } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to update task';
       return {
         success: false,
-        message: error.message || 'Failed to update task'
+        message: errorMessage
       };
     }
   }
@@ -238,9 +259,10 @@ export class TasksService {
         message: 'Task deleted successfully'
       };
     } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to delete task';
       return {
         success: false,
-        message: error.message || 'Failed to delete task'
+        message: errorMessage
       };
     }
   }
@@ -305,9 +327,10 @@ export class TasksService {
         data: stats
       };
     } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to fetch task statistics';
       return {
         success: false,
-        message: error.message || 'Failed to fetch task statistics'
+        message: errorMessage
       };
     }
   }
@@ -340,9 +363,10 @@ export class TasksService {
         message: 'Focus session started'
       };
     } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to start focus session';
       return {
         success: false,
-        message: error.message || 'Failed to start focus session'
+        message: errorMessage
       };
     }
   }
@@ -394,9 +418,10 @@ export class TasksService {
         message: 'Focus session completed'
       };
     } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to end focus session';
       return {
         success: false,
-        message: error.message || 'Failed to end focus session'
+        message: errorMessage
       };
     }
   }
@@ -417,9 +442,10 @@ export class TasksService {
         data: tasks
       };
     } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to fetch tasks by energy level';
       return {
         success: false,
-        message: error.message || 'Failed to fetch tasks by energy level'
+        message: errorMessage
       };
     }
   }

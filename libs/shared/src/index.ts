@@ -27,3 +27,4 @@ export * from './lib/types/auth.types';
 
 export * from './lib/types/ai.types';
 export * from './lib/types/organization.types';
+export * from './lib/types/admin.types';

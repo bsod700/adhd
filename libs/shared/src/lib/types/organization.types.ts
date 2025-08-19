@@ -3,6 +3,7 @@ export interface Organization {
   readonly name: string;
   readonly description?: string;
   readonly domain?: string;
+  readonly subdomain?: string;
   readonly logo?: string;
   readonly settings: OrganizationSettings;
   readonly subscription: SubscriptionInfo;
@@ -18,6 +19,8 @@ export interface OrganizationSettings {
   readonly limits: OrganizationLimits;
   readonly branding: BrandingSettings;
   readonly integrations: IntegrationSettings;
+  readonly allowUserRegistration: boolean;
+  readonly defaultUserRole: import('./auth.types').UserRole;
 }
 
 export interface OrganizationFeatures {

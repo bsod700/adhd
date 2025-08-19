@@ -9,7 +9,8 @@ import {
   RegisterRequest, 
   LoginResponse, 
   JwtPayload,
-  UserRole 
+  UserRole,
+  Permission
 } from '@adhd-dashboard/shared-types';
 import { User } from '../users/entities/user.entity';
 import { Organization } from '../organizations/entities/organization.entity';
@@ -57,7 +58,7 @@ export class AuthService {
       organizationId = organization.id;
     }
 
-    const user = await this.validateUser(loginDto.email, loginDto.password, organizationId);
+    const user = await this.validateUser(loginRequest.email, loginRequest.password, organizationId);
 
     if (!user) {
       throw new UnauthorizedException('Invalid credentials');
@@ -92,29 +93,21 @@ export class AuthService {
 
       organization = this.organizationRepository.create({
         name: organizationName,
-        subdomain,
-        settings: {
-          allowUserRegistration: true,
-          defaultUserRole: 'user',
-          taskRetentionDays: 365,
-          aiIntegrationEnabled: true,
-          customBranding: {
-            primaryColor: '#3b82f6',
-            secondaryColor: '#1e40af',
-          },
-        },
+        subdomain
       });
 
       await this.organizationRepository.save(organization);
     } else if (organizationSubdomain) {
       // Join existing organization
-      organization = await this.organizationRepository.findOne({
+      const foundOrganization = await this.organizationRepository.findOne({
         where: { subdomain: organizationSubdomain, isActive: true },
       });
 
-      if (!organization) {
+      if (!foundOrganization) {
         throw new BadRequestException('Organization not found');
       }
+      
+      organization = foundOrganization;
 
       if (!organization.settings.allowUserRegistration) {
         throw new BadRequestException('User registration is not allowed for this organization');
@@ -142,7 +135,7 @@ export class AuthService {
       firstName,
       lastName,
       organizationId: organization.id,
-      role: organizationName ? UserRole.ADMIN : organization.settings.defaultUserRole as UserRole,
+      role: organizationName ? UserRole.ADMIN : organization.settings.defaultUserRole,
     });
 
     await this.userRepository.save(user);
@@ -150,7 +143,7 @@ export class AuthService {
     return this.generateTokens(user);
   }
 
-  async refreshToken(refreshToken: string): Promise<AuthResponse> {
+  async refreshToken(refreshToken: string): Promise<LoginResponse> {
     try {
       const payload = this.jwtService.verify(refreshToken);
       const user = await this.userRepository.findOne({
@@ -191,8 +184,38 @@ export class AuthService {
         firstName: user.firstName,
         lastName: user.lastName,
         role: user.role,
-        organizationId: user.organizationId,
+        organizationId: user.organizationId || '',
+        permissions: this.getUserPermissions(user.role)
       },
     };
+  }
+
+  private getUserPermissions(role: UserRole): Permission[] {
+    switch (role) {
+      case UserRole.SUPER_ADMIN:
+        return Object.values(Permission);
+      case UserRole.ADMIN:
+        return [
+          Permission.TASK_CREATE,
+          Permission.TASK_READ,
+          Permission.TASK_UPDATE,
+          Permission.TASK_DELETE,
+          Permission.USER_READ,
+          Permission.USER_UPDATE,
+          Permission.ORG_READ,
+          Permission.ORG_WRITE,
+          Permission.AI_SUGGESTIONS,
+          Permission.AI_ANALYTICS
+        ];
+      case UserRole.USER:
+      default:
+        return [
+          Permission.TASK_CREATE,
+          Permission.TASK_READ,
+          Permission.TASK_UPDATE,
+          Permission.TASK_DELETE,
+          Permission.AI_SUGGESTIONS
+        ];
+    }
   }
 } 
