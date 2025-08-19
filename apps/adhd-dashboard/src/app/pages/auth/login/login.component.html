@@ -1,0 +1,108 @@
+<div class="login-container">
+  <div class="login-card">
+    <header class="login-header">
+      <h1 class="login-title">Welcome Back</h1>
+      <p class="login-subtitle">Sign in to your ADHD productivity dashboard</p>
+    </header>
+
+    <!-- Auth Error Display -->
+    @if (authError(); as error) {
+      <div class="auth-error" role="alert" aria-live="polite">
+        <div class="error-icon">⚠️</div>
+        <div class="error-content">
+          <h4>Login Failed</h4>
+          <p>{{ error }}</p>
+        </div>
+      </div>
+    }
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form" role="form">
+      <!-- Email Field -->
+      <div class="form-group">
+        <label for="email" class="form-label">Email</label>
+        <input
+          id="email"
+          type="email"
+          formControlName="email"
+          class="form-input"
+          [class.error]="getFieldError('email')"
+          placeholder="your@email.com"
+          autocomplete="email"
+          required>
+        @if (getFieldError('email'); as error) {
+          <div class="error-message" role="alert">{{ error }}</div>
+        }
+      </div>
+
+      <!-- Password Field -->
+      <div class="form-group">
+        <label for="password" class="form-label">Password</label>
+        <div class="password-field">
+          <input
+            id="password"
+            [type]="showPassword() ? 'text' : 'password'"
+            formControlName="password"
+            class="form-input"
+            [class.error]="getFieldError('password')"
+            placeholder="Enter your password"
+            autocomplete="current-password"
+            required>
+          <button
+            type="button"
+            class="password-toggle"
+            (click)="onTogglePasswordVisibility()"
+            [attr.aria-label]="showPassword() ? 'Hide password' : 'Show password'">
+            {{ showPassword() ? '🙈' : '👁️' }}
+          </button>
+        </div>
+        @if (getFieldError('password'); as error) {
+          <div class="error-message" role="alert">{{ error }}</div>
+        }
+      </div>
+
+      <!-- Remember Me -->
+      <div class="form-group checkbox-group">
+        <label class="checkbox-label">
+          <input
+            type="checkbox"
+            formControlName="rememberMe"
+            class="checkbox-input">
+          <span class="checkbox-text">Remember me</span>
+        </label>
+      </div>
+
+      <!-- Submit Button -->
+      <button
+        type="submit"
+        class="submit-button"
+        [disabled]="isLoading() || loginForm.invalid"
+        [attr.aria-busy]="isLoading()">
+        @if (isLoading()) {
+          <span class="loading-spinner" aria-hidden="true"></span>
+          Signing in...
+        } @else {
+          Sign In
+        }
+      </button>
+    </form>
+
+    <footer class="login-footer">
+      <button
+        type="button"
+        class="link-button"
+        (click)="onForgotPassword()">
+        Forgot your password?
+      </button>
+      
+      <div class="register-prompt">
+        <span>Don't have an account? </span>
+        <button
+          type="button"
+          class="link-button primary"
+          (click)="onNavigateToRegister()">
+          Sign up
+        </button>
+      </div>
+    </footer>
+  </div>
+</div> 

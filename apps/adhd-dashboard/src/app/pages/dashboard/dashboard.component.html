@@ -1,0 +1,159 @@
+<div class="dashboard-container">
+  
+  <!-- Loading State -->
+  @if (isLoading()) {
+    <div class="loading-container">
+      <div class="loading-spinner"></div>
+      <p class="loading-text">{{ UI.MESSAGES.LOADING }}</p>
+    </div>
+  }
+
+  <!-- Error State -->
+  @if (error() && !isLoading()) {
+    <div class="error-container">
+      <div class="error-content">
+        <h3 class="error-title">{{ UI.MESSAGES.ERROR }}</h3>
+        <p class="error-message">{{ error() }}</p>
+        <button 
+          class="btn-primary"
+          (click)="onRefresh()">
+          {{ UI.BUTTONS.REFRESH }}
+        </button>
+      </div>
+    </div>
+  }
+
+  <!-- Main Dashboard Content -->
+  @if (!isLoading() && !error()) {
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+      
+      <!-- Sidebar -->
+      <aside class="lg:col-span-1">
+        <div class="stats-card">
+          <h2 class="stats-title">{{ UI.TITLES.QUICK_STATS }}</h2>
+          
+          <!-- Stats Grid -->
+          @if (stats(); as statsData) {
+            <div class="stats-grid">
+              <div class="stat-item">
+                <span class="stat-label">Today's Tasks</span>
+                <span class="stat-value stat-primary">{{ statsData.todayTasks }}</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-label">Completed</span>
+                <span class="stat-value stat-success">{{ statsData.completed }}</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-label">Overdue</span>
+                <span class="stat-value stat-error">{{ statsData.overdue }}</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-label">Focus Score</span>
+                <span class="stat-value stat-warning">{{ statsData.focusScore }}%</span>
+              </div>
+            </div>
+          }
+          
+          <!-- AI Suggestions Section -->
+          <div class="ai-suggestions-section">
+            <h3 class="suggestions-title">{{ UI.TITLES.AI_SUGGESTIONS }}</h3>
+            <div class="suggestions-list">
+              @for (suggestion of aiSuggestions(); track suggestion.id) {
+                <div 
+                  class="suggestion-item"
+                  [ngClass]="getSuggestionTypeClass(suggestion.type)">
+                  <p class="suggestion-text">{{ suggestion.message }}</p>
+                </div>
+              }
+              @if (aiSuggestions().length === 0) {
+                <div class="no-suggestions">
+                  <p class="text-sm text-gray-500">{{ UI.MESSAGES.NO_SUGGESTIONS }}</p>
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Main Dashboard Content -->
+      <section class="lg:col-span-3">
+        <div class="dashboard-content">
+          
+          <!-- Welcome Section -->
+          <div class="welcome-banner">
+            <h2 class="welcome-title">{{ UI.TITLES.WELCOME }}</h2>
+            <p class="welcome-subtitle">{{ UI.MESSAGES.WELCOME_SUBTITLE }}</p>
+            <div class="welcome-actions">
+              <button 
+                class="btn-primary-inverse"
+                (click)="onCreateTask()"
+                [attr.aria-label]="UI.BUTTONS.CREATE_TASK">
+                {{ UI.BUTTONS.CREATE_TASK }}
+              </button>
+              <button 
+                class="btn-outline"
+                (click)="onGetAiSuggestions()"
+                [attr.aria-label]="UI.BUTTONS.GET_AI_SUGGESTIONS">
+                {{ UI.BUTTONS.GET_AI_SUGGESTIONS }}
+              </button>
+            </div>
+          </div>
+
+          <!-- Progress Charts -->
+          <div class="charts-grid">
+            <div class="chart-card">
+              <h3 class="chart-title">{{ UI.TITLES.WEEKLY_PROGRESS }}</h3>
+              <div class="chart-placeholder">
+                <p class="chart-placeholder-text">📊 Chart Component</p>
+              </div>
+            </div>
+            <div class="chart-card">
+              <h3 class="chart-title">{{ UI.TITLES.COMPLETION_RATE }}</h3>
+              <div class="chart-placeholder">
+                <p class="chart-placeholder-text">📈 Progress Chart</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Recent Tasks -->
+          <div class="recent-tasks-card">
+            <div class="card-header">
+              <h3 class="card-title">{{ UI.TITLES.RECENT_TASKS }}</h3>
+              <button 
+                class="view-all-btn"
+                (click)="onViewAllTasks()"
+                [attr.aria-label]="UI.BUTTONS.VIEW_ALL">
+                {{ UI.BUTTONS.VIEW_ALL }}
+              </button>
+            </div>
+            <div class="tasks-list">
+              @for (task of recentTasks(); track task.id) {
+                <div class="task-item">
+                  <div class="task-info">
+                    <div 
+                      class="task-status-indicator"
+                      [ngClass]="getStatusIndicatorClasses(task.status)"
+                      [attr.aria-label]="'Task status: ' + getStatusLabel(task.status)">
+                    </div>
+                    <span class="task-title">{{ task.title }}</span>
+                  </div>
+                  <span 
+                    class="task-status-badge"
+                    [ngClass]="getTaskStatusClasses(task.status)">
+                    {{ getStatusLabel(task.status) }}
+                  </span>
+                </div>
+              }
+              @if (recentTasks().length === 0) {
+                <div class="no-tasks">
+                  <p class="text-sm text-gray-500">{{ UI.MESSAGES.NO_TASKS }}</p>
+                </div>
+              }
+            </div>
+          </div>
+
+        </div>
+      </section>
+    </div>
+  }
+</div> 

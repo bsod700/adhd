@@ -1,101 +1,201 @@
-# AdhdDashboard
+# ADHD Dashboard
 
-<a alt="Nx logo" href="https://nx.dev" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="45"></a>
+A comprehensive SaaS productivity dashboard designed specifically for ADHD users, built with Angular 20, NestJS, and modern TypeScript.
 
-✨ Your new, shiny [Nx workspace](https://nx.dev) is ready ✨.
+## 🚀 Quick Start (< 120 seconds)
 
-[Learn more about this workspace setup and its capabilities](https://nx.dev/getting-started/tutorials/angular-monorepo-tutorial?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects) or run `npx nx graph` to visually explore what was created. Now, let's get you up to speed!
+### Prerequisites
+- Node.js 20.x or higher
+- pnpm 8.x or higher
 
-## Run tasks
+### Development Setup
 
-To run the dev server for your app, use:
+```bash
+# 1. Clone and install dependencies (30s)
+git clone <repository-url>
+cd adhd-dashboard
+pnpm install
 
-```sh
-npx nx serve adhd-dashboard
+# 2. Start development servers (20s)
+pnpm dev          # Frontend (http://localhost:4200)
+pnpm dev:backend  # Backend API (http://localhost:3000)
+
+# 3. Open browser and start coding! 🎉
 ```
 
-To create a production bundle:
+## 📊 Architecture
 
-```sh
-npx nx build adhd-dashboard
+```
+adhd-dashboard/
+├── apps/
+│   ├── adhd-dashboard/     # Angular 20 frontend app
+│   └── backend/            # NestJS API server
+├── libs/
+│   └── shared/             # Shared TypeScript types
+└── docs/                   # Documentation
 ```
 
-To see all available targets to run for a project, run:
+## 🧪 Testing
 
-```sh
-npx nx show project adhd-dashboard
+### Run All Tests
+```bash
+pnpm test                   # Unit tests with coverage
+pnpm test:watch            # Watch mode for development
+pnpm test:ci               # CI mode with coverage reports
+pnpm e2e                   # End-to-end tests
 ```
 
-These targets are either [inferred automatically](https://nx.dev/concepts/inferred-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) or defined in the `project.json` or `package.json` files.
+### Test Coverage Requirements
+- Target: ≥ 80% coverage before merge
+- Unit tests are co-located with source files
+- Integration tests in dedicated e2e directories
 
-[More about running tasks in the docs &raquo;](https://nx.dev/features/run-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+## 🏗️ Build for Production
 
-## Add new projects
-
-While you could add new projects to your workspace manually, you might want to leverage [Nx plugins](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) and their [code generation](https://nx.dev/features/generate-code?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) feature.
-
-Use the plugin's generator to create new projects.
-
-To generate a new application, use:
-
-```sh
-npx nx g @nx/angular:app demo
+### Quick Production Build
+```bash
+pnpm build:all             # Build all applications
+pnpm start                 # Start production frontend
+pnpm start:backend         # Start production backend
 ```
 
-To generate a new library, use:
+### Optimized Builds
+- Release builds with compiler optimizations
+- Source maps excluded in production
+- Bundle analysis and tree-shaking enabled
+- TypeScript strict mode enforced
 
-```sh
-npx nx g @nx/angular:lib mylib
+## 🛠️ Development
+
+### Code Quality
+```bash
+pnpm lint                  # ESLint + Angular specific rules
+pnpm lint:fix             # Auto-fix linting issues
+pnpm format               # Prettier formatting
+pnpm typecheck            # TypeScript type checking
 ```
 
-You can use `npx nx list` to get a list of installed plugins. Then, run `npx nx list <plugin-name>` to learn about more specific capabilities of a particular plugin. Alternatively, [install Nx Console](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) to browse plugins and generators in your IDE.
+### Project Standards
+- **Angular 20** with standalone components
+- **Control Flow Syntax** (`@if`, `@for`) - NO legacy `*ngIf`
+- **Zoneless Change Detection** for better performance
+- **Signal Store** pattern with `@ngrx/signals`
+- **Typed Reactive Forms** exclusively
+- **OnPush Change Detection** strategy
 
-[Learn more about Nx plugins &raquo;](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) | [Browse the plugin registry &raquo;](https://nx.dev/plugin-registry?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+### Backend Standards
+- **NestJS** with TypeScript
+- **TypeORM** with SQLite for development
+- **Input validation** with class-validator
+- **Swagger documentation** auto-generated
+- **JWT authentication** with refresh tokens
 
-## Set up CI!
+## 🏢 Architecture Principles
 
-### Step 1
+### ADHD-Focused Features
+- **Energy Level Matching**: Tasks categorized by required energy
+- **Focus Session Tracking**: Built-in concentration monitoring
+- **Context Switching**: Smart task grouping by environment
+- **AI Suggestions**: Intelligent task prioritization
+- **Minimal Cognitive Load**: Clean, distraction-free interface
 
-To connect to Nx Cloud, run the following command:
+### Technical Standards
+- ✅ **SOLID Principles**: Clean, modular architecture
+- ✅ **Type Safety**: No `any` types, strict TypeScript
+- ✅ **Performance**: Lazy loading, memoization, async patterns
+- ✅ **Security**: Input validation, JWT tokens, CORS protection
+- ✅ **Testing**: 80%+ coverage, unit + integration tests
+- ✅ **Accessibility**: WCAG AA compliance, keyboard navigation
 
-```sh
-npx nx connect
+## 🔒 Security
+
+### API Security
+- JWT token authentication
+- Input validation on all endpoints
+- CORS protection configured
+- Rate limiting implemented
+- SQL injection prevention
+
+### Frontend Security
+- XSS protection with Angular sanitization
+- CSP headers configured
+- Secure token storage
+- Input sanitization
+- HTTPS-only in production
+
+## 📱 UI/UX Standards
+
+### Performance
+- **< 100ms** perceived latency for critical interactions
+- Skeleton loaders for async operations
+- Optimistic updates where appropriate
+- Image lazy loading and optimization
+
+### Accessibility
+- **WCAG AA** color contrast compliance
+- Full keyboard navigation support
+- ARIA roles and labels
+- Screen reader compatibility
+- `prefers-color-scheme` support
+
+## 🚀 Deployment
+
+### Environment Variables
+```bash
+# Backend (.env)
+DATABASE_URL=sqlite:./data/adhd.db
+JWT_SECRET=your-secret-key
+CORS_ORIGIN=http://localhost:4200
+
+# Frontend (environment.ts)
+API_URL=http://localhost:3000/api
 ```
 
-Connecting to Nx Cloud ensures a [fast and scalable CI](https://nx.dev/ci/intro/why-nx-cloud?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) pipeline. It includes features such as:
-
-- [Remote caching](https://nx.dev/ci/features/remote-cache?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Task distribution across multiple machines](https://nx.dev/ci/features/distribute-task-execution?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Automated e2e test splitting](https://nx.dev/ci/features/split-e2e-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Task flakiness detection and rerunning](https://nx.dev/ci/features/flaky-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-### Step 2
-
-Use the following command to configure a CI workflow for your workspace:
-
-```sh
-npx nx g ci-workflow
+### Docker Support
+```bash
+# Build and run with Docker
+docker-compose up --build
 ```
 
-[Learn more about Nx on CI](https://nx.dev/ci/intro/ci-with-nx#ready-get-started-with-your-provider?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+### CI/CD Pipeline
+- **Linting & Type Checking**: ESLint + TypeScript
+- **Testing**: Unit tests + E2E with Playwright
+- **Security Scanning**: Vulnerability detection
+- **Build Artifacts**: Optimized production builds
+- **Deployment**: Automated staging/production
 
-## Install Nx Console
+## 📋 Scripts Reference
 
-Nx Console is an editor extension that enriches your developer experience. It lets you run tasks, generate code, and improves code autocompletion in your IDE. It is available for VSCode and IntelliJ.
+| Command | Description |
+|---------|-------------|
+| `pnpm dev` | Start frontend development server |
+| `pnpm dev:backend` | Start backend development server |
+| `pnpm build` | Build frontend for production |
+| `pnpm build:backend` | Build backend for production |
+| `pnpm build:all` | Build all applications |
+| `pnpm test` | Run all unit tests with coverage |
+| `pnpm test:watch` | Run tests in watch mode |
+| `pnpm e2e` | Run end-to-end tests |
+| `pnpm lint` | Run linter on all projects |
+| `pnpm format` | Format code with Prettier |
+| `pnpm clean` | Clean build artifacts |
 
-[Install Nx Console &raquo;](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+## 🤝 Contributing
 
-## Useful links
+1. **Code Style**: Follow ESLint rules and Prettier formatting
+2. **Commits**: Use conventional commit messages
+3. **Testing**: Add tests for new features (maintain 80%+ coverage)
+4. **Documentation**: Update README and inline docs
+5. **Reviews**: All PRs require review and passing CI
 
-Learn more:
+## 📚 Resources
 
-- [Learn more about this workspace setup](https://nx.dev/getting-started/tutorials/angular-monorepo-tutorial?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects)
-- [Learn about Nx on CI](https://nx.dev/ci/intro/ci-with-nx?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Releasing Packages with Nx release](https://nx.dev/features/manage-releases?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [What are Nx plugins?](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+- [Angular Documentation](https://angular.dev)
+- [NestJS Documentation](https://docs.nestjs.com)
+- [NgRx Signals](https://ngrx.io/guide/signals)
+- [TypeScript Handbook](https://www.typescriptlang.org/docs)
+- [ADHD UX Guidelines](./docs/adhd-ux-guidelines.md)
 
-And join the Nx community:
-- [Discord](https://go.nx.dev/community)
-- [Follow us on X](https://twitter.com/nxdevtools) or [LinkedIn](https://www.linkedin.com/company/nrwl)
-- [Our Youtube channel](https://www.youtube.com/@nxdevtools)
-- [Our blog](https://nx.dev/blog?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+## 📄 License
+
+MIT © ADHD Dashboard Team

@@ -1,0 +1,286 @@
+.tasks-container {
+  @apply max-w-6xl mx-auto px-4 py-6;
+}
+
+.tasks-header {
+  @apply mb-8 text-center;
+  
+  .page-title {
+    @apply text-3xl font-bold text-gray-900 dark:text-white mb-2;
+  }
+  
+  .page-subtitle {
+    @apply text-lg text-gray-600 dark:text-gray-300;
+  }
+}
+
+.tasks-layout {
+  @apply grid grid-cols-1 lg:grid-cols-3 gap-8;
+}
+
+// Task Form Section
+.task-form-section {
+  @apply lg:col-span-1 bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-700 h-fit;
+  
+  .section-title {
+    @apply text-xl font-semibold text-gray-900 dark:text-white mb-4;
+  }
+}
+
+.task-form {
+  .form-grid {
+    @apply space-y-4;
+  }
+  
+  .form-field {
+    @apply space-y-2;
+  }
+  
+  .form-label {
+    @apply block text-sm font-medium text-gray-700 dark:text-gray-300;
+    
+    &.required::after {
+      content: ' *';
+      @apply text-red-500;
+    }
+  }
+  
+  .form-input,
+  .form-textarea,
+  .form-select {
+    @apply w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md;
+    @apply bg-white dark:bg-gray-700 text-gray-900 dark:text-white;
+    @apply focus:ring-2 focus:ring-blue-500 focus:border-blue-500;
+    @apply transition-colors duration-200;
+    
+    &[aria-invalid="true"] {
+      @apply border-red-500 focus:ring-red-500 focus:border-red-500;
+    }
+  }
+  
+  .form-textarea {
+    @apply resize-y min-h-[100px];
+  }
+  
+  .form-error {
+    @apply text-sm text-red-600 dark:text-red-400;
+  }
+  
+  .form-hint {
+    @apply text-xs text-gray-500 dark:text-gray-400;
+  }
+  
+  .form-actions {
+    @apply flex gap-3 pt-4;
+    
+    .btn {
+      @apply flex-1;
+    }
+  }
+}
+
+// Tasks List Section
+.tasks-list-section {
+  @apply lg:col-span-2;
+  
+  .section-header {
+    @apply flex justify-between items-center mb-6;
+    
+    .section-title {
+      @apply text-xl font-semibold text-gray-900 dark:text-white;
+    }
+  }
+}
+
+.tasks-grid {
+  @apply grid grid-cols-1 md:grid-cols-2 gap-4;
+}
+
+.task-card {
+  @apply bg-white dark:bg-gray-800 rounded-lg p-4 shadow-sm border border-gray-200 dark:border-gray-700;
+  @apply hover:shadow-md transition-shadow duration-200;
+  
+  .task-header {
+    @apply flex justify-between items-start mb-3;
+    
+    .task-title {
+      @apply text-lg font-medium text-gray-900 dark:text-white flex-1 mr-2;
+    }
+    
+    .task-priority {
+      @apply px-2 py-1 rounded text-xs font-medium uppercase;
+      
+      &.priority-low {
+        @apply bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300;
+      }
+      
+      &.priority-medium {
+        @apply bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300;
+      }
+      
+      &.priority-high {
+        @apply bg-orange-100 text-orange-700 dark:bg-orange-900 dark:text-orange-300;
+      }
+      
+      &.priority-urgent {
+        @apply bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300;
+      }
+    }
+  }
+  
+  .task-description {
+    @apply text-sm text-gray-600 dark:text-gray-400 mb-3;
+  }
+  
+  .task-meta {
+    @apply flex flex-wrap gap-2 mb-3 text-xs text-gray-500 dark:text-gray-400;
+    
+    .task-due-date,
+    .task-estimated-time {
+      @apply bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded;
+    }
+    
+    .task-tags {
+      @apply flex flex-wrap gap-1;
+      
+      .task-tag {
+        @apply bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300 px-2 py-1 rounded;
+      }
+    }
+  }
+  
+  .task-status {
+    @apply mb-3;
+    
+    .status-select {
+      @apply w-full px-2 py-1 text-sm rounded border;
+      
+      &.status-todo {
+        @apply bg-gray-50 border-gray-300 text-gray-700;
+      }
+      
+      &.status-in_progress {
+        @apply bg-blue-50 border-blue-300 text-blue-700;
+      }
+      
+      &.status-completed {
+        @apply bg-green-50 border-green-300 text-green-700;
+      }
+      
+      &.status-cancelled {
+        @apply bg-red-50 border-red-300 text-red-700;
+      }
+    }
+  }
+  
+  .task-actions {
+    @apply flex justify-end;
+  }
+}
+
+// Common Button Styles
+.btn {
+  @apply px-4 py-2 rounded-md font-medium text-sm transition-colors duration-200;
+  @apply focus:outline-none focus:ring-2 focus:ring-offset-2;
+  @apply disabled:opacity-50 disabled:cursor-not-allowed;
+  
+  &.btn-primary {
+    @apply bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500;
+  }
+  
+  &.btn-secondary {
+    @apply bg-gray-600 text-white hover:bg-gray-700 focus:ring-gray-500;
+  }
+  
+  &.btn-outline {
+    @apply border border-gray-300 text-gray-700 hover:bg-gray-50 focus:ring-gray-500;
+  }
+  
+  &.btn-danger {
+    @apply bg-red-600 text-white hover:bg-red-700 focus:ring-red-500;
+  }
+  
+  &.btn-sm {
+    @apply px-3 py-1 text-xs;
+  }
+}
+
+// Loading States
+.loading-container {
+  @apply flex flex-col items-center justify-center py-12;
+  
+  .loading-spinner {
+    @apply w-8 h-8 border-4 border-gray-200 border-t-blue-600 rounded-full animate-spin mb-4;
+  }
+  
+  .loading-text {
+    @apply text-gray-600 dark:text-gray-400;
+  }
+}
+
+.loading-spinner {
+  @apply w-4 h-4 border-2 border-gray-200 border-t-current rounded-full animate-spin;
+}
+
+// Error States
+.error-container {
+  @apply bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-6 text-center;
+  
+  .error-title {
+    @apply text-lg font-medium text-red-900 dark:text-red-200 mb-2;
+  }
+  
+  .error-message {
+    @apply text-red-700 dark:text-red-300 mb-4;
+  }
+}
+
+// Empty States
+.empty-state {
+  @apply text-center py-12;
+  
+  .empty-title {
+    @apply text-lg font-medium text-gray-900 dark:text-white mb-2;
+  }
+  
+  .empty-message {
+    @apply text-gray-600 dark:text-gray-400;
+  }
+}
+
+// Responsive Design
+@media (max-width: 768px) {
+  .tasks-layout {
+    @apply grid-cols-1;
+  }
+  
+  .task-form-section {
+    @apply order-2;
+  }
+  
+  .tasks-list-section {
+    @apply order-1;
+  }
+  
+  .tasks-grid {
+    @apply grid-cols-1;
+  }
+}
+
+// High Contrast Mode Support
+@media (prefers-contrast: high) {
+  .task-card {
+    @apply border-2;
+  }
+  
+  .btn {
+    @apply border-2 border-current;
+  }
+}
+
+// Reduced Motion Support
+@media (prefers-reduced-motion: reduce) {
+  * {
+    @apply transition-none animate-none;
+  }
+} 

@@ -1,0 +1,129 @@
+<div class="ai-assistant-container">
+  <header class="assistant-header">
+    <h1 class="page-title">AI Assistant</h1>
+    <p class="page-subtitle">Get personalized productivity insights and task recommendations</p>
+  </header>
+
+  <div class="assistant-content">
+    <!-- Chat Interface -->
+    <section class="chat-container" role="main" aria-label="AI Chat Interface">
+      <div class="chat-messages" #chatMessages role="log" aria-live="polite" aria-label="Chat conversation">
+        @for (message of messages(); track message.id) {
+          <div class="message" [ngClass]="'message-' + message.type">
+            <div class="message-avatar">
+              @if (message.type === 'user') {
+                <span class="avatar-user" role="img" aria-label="User avatar">👤</span>
+              } @else {
+                <span class="avatar-ai" role="img" aria-label="AI assistant avatar">🤖</span>
+              }
+            </div>
+            <div class="message-content">
+              <div class="message-text">{{ message.content }}</div>
+              <div class="message-time">{{ message.timestamp | date:'short' }}</div>
+            </div>
+          </div>
+        }
+        
+        @if (isTyping()) {
+          <div class="message message-ai">
+            <div class="message-avatar">
+              <span class="avatar-ai" role="img" aria-label="AI assistant avatar">🤖</span>
+            </div>
+            <div class="message-content">
+              <div class="typing-indicator" aria-label="AI is typing">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+
+      <!-- Input Form -->
+      <form [formGroup]="chatForm" (ngSubmit)="onSendMessage()" class="chat-input-form" role="form">
+        <div class="input-group">
+          <label for="message-input" class="sr-only">Type your message</label>
+          <input
+            id="message-input"
+            type="text"
+            formControlName="message"
+            placeholder="Ask me about your tasks, energy levels, or productivity tips..."
+            class="chat-input"
+            [disabled]="isTyping()"
+            autocomplete="off">
+          <button
+            type="submit"
+            class="send-button"
+            [disabled]="chatForm.invalid || isTyping()"
+            aria-label="Send message">
+            📤
+          </button>
+        </div>
+      </form>
+    </section>
+
+    <!-- Quick Actions -->
+    <aside class="quick-actions" role="complementary" aria-label="Quick actions">
+      <h3 class="section-title">Quick Actions</h3>
+      <div class="action-buttons" role="group" aria-label="Quick action buttons">
+        <button 
+          type="button"
+          class="action-button"
+          (click)="onQuickAction('energy-check')"
+          aria-label="Check energy level">
+          🔋 Check Energy Level
+        </button>
+        <button 
+          type="button"
+          class="action-button"
+          (click)="onQuickAction('task-suggestions')"
+          aria-label="Get task suggestions">
+          📝 Get Task Suggestions
+        </button>
+        <button 
+          type="button"
+          class="action-button"
+          (click)="onQuickAction('focus-tips')"
+          aria-label="Get focus tips">
+          🎯 Focus Tips
+        </button>
+        <button 
+          type="button"
+          class="action-button"
+          (click)="onQuickAction('break-reminder')"
+          aria-label="Set break reminder">
+          ⏸️ Break Reminder
+        </button>
+      </div>
+    </aside>
+
+    <!-- AI Insights -->
+    <aside class="ai-insights" role="complementary" aria-label="AI insights">
+      <h3 class="section-title">Today's Insights</h3>
+      <div class="insights-grid">
+        <div class="insight-card">
+          <div class="insight-icon" role="img" aria-label="Chart icon">📊</div>
+          <div class="insight-content">
+            <h4>Productivity Pattern</h4>
+            <p>You're most productive between 9-11 AM. Schedule important tasks during this time.</p>
+          </div>
+        </div>
+        <div class="insight-card">
+          <div class="insight-icon" role="img" aria-label="Energy icon">⚡</div>
+          <div class="insight-content">
+            <h4>Energy Management</h4>
+            <p>Take a 15-minute break every 45 minutes to maintain optimal focus.</p>
+          </div>
+        </div>
+        <div class="insight-card">
+          <div class="insight-icon" role="img" aria-label="Target icon">🎯</div>
+          <div class="insight-content">
+            <h4>Task Optimization</h4>
+            <p>Break down large tasks into 25-minute focused sessions for better completion rates.</p>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </div>
+</div> 

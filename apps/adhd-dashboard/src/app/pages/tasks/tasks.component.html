@@ -1,0 +1,266 @@
+<main class="tasks-container" role="main" aria-labelledby="tasks-heading">
+  <header class="tasks-header">
+    <h1 id="tasks-heading" class="page-title">Task Management</h1>
+    <p class="page-subtitle">Create, manage, and track your tasks</p>
+  </header>
+
+  <div class="tasks-layout">
+    <!-- Task Creation Form -->
+    <section class="task-form-section" aria-labelledby="create-task-heading">
+      <h2 id="create-task-heading" class="section-title">Create New Task</h2>
+      
+      <form [formGroup]="createTaskForm" (ngSubmit)="onCreateTask()" class="task-form" novalidate>
+        <div class="form-grid">
+          <!-- Title Field -->
+          <div class="form-field">
+            <label for="task-title" class="form-label required">Title</label>
+            <input 
+              id="task-title"
+              type="text" 
+              formControlName="title"
+              class="form-input"
+              placeholder="Enter task title"
+              [attr.aria-describedby]="getFormFieldError('title') ? 'title-error' : null"
+              [attr.aria-invalid]="getFormFieldError('title') ? 'true' : 'false'">
+            @if (getFormFieldError('title'); as error) {
+              <div id="title-error" class="form-error" role="alert">{{ error }}</div>
+            }
+          </div>
+
+          <!-- Description Field -->
+          <div class="form-field">
+            <label for="task-description" class="form-label">Description</label>
+            <textarea 
+              id="task-description"
+              formControlName="description"
+              class="form-textarea"
+              placeholder="Optional task description"
+              rows="3"
+              [attr.aria-describedby]="getFormFieldError('description') ? 'description-error' : null">
+            </textarea>
+            @if (getFormFieldError('description'); as error) {
+              <div id="description-error" class="form-error" role="alert">{{ error }}</div>
+            }
+          </div>
+
+          <!-- Priority Field -->
+          <div class="form-field">
+            <label for="task-priority" class="form-label required">Priority</label>
+            <select 
+              id="task-priority"
+              formControlName="priority"
+              class="form-select"
+              [attr.aria-invalid]="getFormFieldError('priority') ? 'true' : 'false'">
+              <option [value]="Priority.LOW">Low Priority</option>
+              <option [value]="Priority.MEDIUM">Medium Priority</option>
+              <option [value]="Priority.HIGH">High Priority</option>
+              <option [value]="Priority.URGENT">Urgent</option>
+            </select>
+            @if (getFormFieldError('priority'); as error) {
+              <div class="form-error" role="alert">{{ error }}</div>
+            }
+          </div>
+
+          <!-- Difficulty Field -->
+          <div class="form-field">
+            <label for="task-difficulty" class="form-label required">Difficulty</label>
+            <select 
+              id="task-difficulty"
+              formControlName="difficulty"
+              class="form-select"
+              [attr.aria-invalid]="getFormFieldError('difficulty') ? 'true' : 'false'">
+              <option [value]="Difficulty.EASY">Easy</option>
+              <option [value]="Difficulty.MEDIUM">Medium</option>
+              <option [value]="Difficulty.HARD">Hard</option>
+              <option [value]="Difficulty.VERY_HARD">Very Hard</option>
+            </select>
+            @if (getFormFieldError('difficulty'); as error) {
+              <div class="form-error" role="alert">{{ error }}</div>
+            }
+          </div>
+
+          <!-- Due Date Field -->
+          <div class="form-field">
+            <label for="task-due-date" class="form-label">Due Date</label>
+            <input 
+              id="task-due-date"
+              type="date" 
+              formControlName="dueDate"
+              class="form-input">
+          </div>
+
+          <!-- Estimated Duration Field -->
+          <div class="form-field">
+            <label for="task-estimated-duration" class="form-label">Estimated Duration (minutes)</label>
+            <input 
+              id="task-estimated-duration"
+              type="number" 
+              formControlName="estimatedDuration"
+              class="form-input"
+              placeholder="60"
+              min="1"
+              max="480"
+              [attr.aria-describedby]="getFormFieldError('estimatedDuration') ? 'duration-error' : null">
+            @if (getFormFieldError('estimatedDuration'); as error) {
+              <div id="duration-error" class="form-error" role="alert">{{ error }}</div>
+            }
+          </div>
+
+          <!-- Tags Field -->
+          <div class="form-field">
+            <label for="task-tags" class="form-label">Tags</label>
+            <input 
+              id="task-tags"
+              type="text" 
+              formControlName="tags"
+              class="form-input"
+              placeholder="work, urgent, project (comma-separated)">
+            <small class="form-hint">Separate tags with commas</small>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button 
+            type="submit" 
+            class="btn btn-primary"
+            [disabled]="createTaskForm.invalid || tasksStore.isCreating()"
+            [attr.aria-label]="tasksStore.isCreating() ? 'Creating task...' : 'Create new task'">
+            @if (tasksStore.isCreating()) {
+              <span class="loading-spinner" aria-hidden="true"></span>
+              Creating...
+            } @else {
+              Create Task
+            }
+          </button>
+          
+          <button 
+            type="button" 
+            class="btn btn-secondary"
+            (click)="createTaskForm.reset({ priority: Priority.MEDIUM })"
+            [disabled]="tasksStore.isCreating()"
+            aria-label="Reset form">
+            Reset
+          </button>
+        </div>
+      </form>
+    </section>
+
+    <!-- Tasks List -->
+    <section class="tasks-list-section" aria-labelledby="tasks-list-heading">
+      <div class="section-header">
+        <h2 id="tasks-list-heading" class="section-title">Your Tasks</h2>
+        <button 
+          class="btn btn-outline"
+          (click)="loadTasks()"
+          [disabled]="tasksStore.isLoading()"
+          aria-label="Refresh tasks list">
+          @if (tasksStore.isLoading()) {
+            <span class="loading-spinner" aria-hidden="true"></span>
+            Loading...
+          } @else {
+            Refresh
+          }
+        </button>
+      </div>
+
+      <!-- Loading State -->
+      @if (tasksStore.isLoading()) {
+        <div class="loading-container" role="status" aria-live="polite">
+          <div class="loading-spinner"></div>
+          <p class="loading-text">Loading tasks...</p>
+        </div>
+      }
+
+      <!-- Error State -->
+      @if (tasksStore.error() && !tasksStore.isLoading()) {
+        <div class="error-container" role="alert">
+          <div class="error-content">
+            <h3 class="error-title">Error Loading Tasks</h3>
+            <p class="error-message">{{ tasksStore.error() }}</p>
+            <button 
+              class="btn btn-primary"
+              (click)="loadTasks()"
+              aria-label="Retry loading tasks">
+              Try Again
+            </button>
+          </div>
+        </div>
+      }
+
+      <!-- Tasks Grid -->
+      @if (!tasksStore.isLoading() && !tasksStore.error()) {
+        <div class="tasks-grid">
+          @for (task of tasksStore.tasks(); track trackByTaskId($index, task)) {
+            <article class="task-card" [attr.aria-labelledby]="'task-title-' + task.id">
+              <div class="task-header">
+                <h3 [id]="'task-title-' + task.id" class="task-title">{{ task.title }}</h3>
+                <div class="task-priority" [ngClass]="'priority-' + task.priority">
+                  {{ task.priority }}
+                </div>
+              </div>
+
+              @if (task.description) {
+                <p class="task-description">{{ task.description }}</p>
+              }
+
+              <div class="task-meta">
+                @if (task.dueDate) {
+                  <span class="task-due-date">
+                    Due: {{ task.dueDate | date:'shortDate' }}
+                  </span>
+                }
+                
+                @if (task.estimatedDuration) {
+                  <span class="task-estimated-time">
+                    Est: {{ task.estimatedDuration }}min
+                  </span>
+                }
+
+                @if (task.tags.length > 0) {
+                  <div class="task-tags">
+                    @for (tag of task.tags; track tag) {
+                      <span class="task-tag">{{ tag }}</span>
+                    }
+                  </div>
+                }
+              </div>
+
+              <div class="task-status">
+                <label [for]="'status-select-' + task.id" class="sr-only">
+                  Change status for {{ task.title }}
+                </label>
+                <select 
+                  [id]="'status-select-' + task.id"
+                  [value]="task.status"
+                  (change)="onStatusSelectChange(task.id, $event)"
+                  class="status-select"
+                  [ngClass]="'status-' + task.status">
+                  <option [value]="TaskStatus.TODO">To Do</option>
+                  <option [value]="TaskStatus.IN_PROGRESS">In Progress</option>
+                  <option [value]="TaskStatus.COMPLETED">Completed</option>
+                  <option [value]="TaskStatus.CANCELLED">Cancelled</option>
+                </select>
+              </div>
+
+              <div class="task-actions">
+                <button 
+                  class="btn btn-danger btn-sm"
+                  (click)="onDeleteTask(task.id)"
+                  [attr.aria-label]="'Delete task: ' + task.title">
+                  Delete
+                </button>
+              </div>
+            </article>
+          }
+
+          @if (tasksStore.tasks().length === 0) {
+            <div class="empty-state">
+              <h3 class="empty-title">No tasks yet</h3>
+              <p class="empty-message">Create your first task to get started!</p>
+            </div>
+          }
+        </div>
+      }
+    </section>
+  </div>
+</main> 

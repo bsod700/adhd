@@ -1,0 +1,132 @@
+// Register Component Styles
+// Following AI_RULES: DRY, maintainable, accessible
+
+.register-container {
+  @apply min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 py-12 px-4 sm:px-6 lg:px-8;
+}
+
+.register-card {
+  @apply max-w-md w-full space-y-8 bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg;
+}
+
+.register-header {
+  @apply text-center;
+}
+
+.register-title {
+  @apply text-3xl font-extrabold text-gray-900 dark:text-white;
+}
+
+.register-subtitle {
+  @apply mt-2 text-sm text-gray-600 dark:text-gray-400;
+}
+
+.register-form {
+  @apply mt-8 space-y-6;
+}
+
+.name-fields {
+  @apply grid grid-cols-2 gap-4;
+}
+
+.form-group {
+  @apply space-y-1;
+  
+  &.checkbox-group {
+    @apply space-y-0;
+  }
+}
+
+.form-label {
+  @apply block text-sm font-medium text-gray-700 dark:text-gray-300;
+}
+
+.form-input {
+  @apply appearance-none relative block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 
+         placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white 
+         bg-white dark:bg-gray-700 rounded-md focus:outline-none focus:ring-primary-500 
+         focus:border-primary-500 focus:z-10 sm:text-sm transition-colors;
+  
+  &.error {
+    @apply border-red-500 focus:border-red-500 focus:ring-red-500;
+  }
+}
+
+.password-field {
+  @apply relative;
+}
+
+.password-toggle {
+  @apply absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5 
+         text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200
+         focus:outline-none focus:ring-2 focus:ring-primary-500 rounded;
+}
+
+.checkbox-label {
+  @apply flex items-start;
+}
+
+.checkbox-input {
+  @apply h-4 w-4 mt-1 text-primary-600 focus:ring-primary-500 border-gray-300 dark:border-gray-600 
+         rounded bg-white dark:bg-gray-700 flex-shrink-0;
+}
+
+.checkbox-text {
+  @apply ml-2 block text-sm text-gray-900 dark:text-gray-300;
+}
+
+.link {
+  @apply text-primary-600 hover:text-primary-500 dark:text-primary-400 dark:hover:text-primary-300;
+}
+
+.submit-button {
+  @apply relative w-full flex justify-center py-2 px-4 border border-transparent 
+         text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 
+         focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500
+         disabled:opacity-50 disabled:cursor-not-allowed transition-colors;
+}
+
+.loading-spinner {
+  @apply inline-block w-4 h-4 mr-2 border-2 border-white border-t-transparent rounded-full animate-spin;
+}
+
+.register-footer {
+  @apply mt-6 text-center;
+}
+
+.link-button {
+  @apply text-sm text-primary-600 hover:text-primary-500 dark:text-primary-400 
+         dark:hover:text-primary-300 focus:outline-none focus:ring-2 focus:ring-primary-500 
+         rounded transition-colors;
+  
+  &.primary {
+    @apply font-medium;
+  }
+}
+
+.login-prompt {
+  @apply text-sm text-gray-600 dark:text-gray-400;
+}
+
+.error-message {
+  @apply mt-1 text-sm text-red-600 dark:text-red-400;
+}
+
+// Responsive adjustments
+@media (max-width: 640px) {
+  .register-container {
+    @apply px-4 py-8;
+  }
+  
+  .register-card {
+    @apply p-6;
+  }
+  
+  .register-title {
+    @apply text-2xl;
+  }
+  
+  .name-fields {
+    @apply grid-cols-1 gap-4;
+  }
+} 

@@ -1,0 +1,240 @@
+// AI Assistant Component Styles
+// Following AI_RULES: DRY, maintainable, accessible
+
+// Container & Layout
+.ai-assistant-container {
+  @apply max-w-6xl mx-auto p-6;
+}
+
+.assistant-header {
+  @apply text-center mb-8;
+}
+
+.page-title {
+  @apply text-3xl font-bold text-gray-900 dark:text-white mb-2;
+}
+
+.page-subtitle {
+  @apply text-lg text-gray-600 dark:text-gray-300;
+}
+
+.assistant-content {
+  @apply grid grid-cols-1 lg:grid-cols-3 gap-6;
+}
+
+// Chat Interface
+.chat-container {
+  @apply lg:col-span-2 bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden;
+}
+
+.chat-messages {
+  @apply p-4 h-96 overflow-y-auto space-y-4;
+  scroll-behavior: smooth;
+}
+
+// Message Components
+.message {
+  @apply flex gap-3;
+  
+  &.message-user {
+    @apply justify-end;
+    
+    .message-content {
+      @apply bg-primary-500 text-white rounded-lg p-3;
+    }
+  }
+  
+  &.message-ai {
+    .message-content {
+      @apply bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg p-3;
+    }
+  }
+}
+
+.message-avatar {
+  @apply flex-shrink-0;
+}
+
+.avatar-user,
+.avatar-ai {
+  @apply w-8 h-8 rounded-full bg-primary-500 text-white flex items-center justify-center text-sm;
+}
+
+.message-content {
+  @apply max-w-xs lg:max-w-md;
+}
+
+.message-text {
+  @apply text-sm;
+}
+
+.message-time {
+  @apply text-xs opacity-70 mt-1;
+}
+
+// Typing Indicator
+.typing-indicator {
+  @apply flex space-x-1;
+  
+  span {
+    @apply w-2 h-2 bg-gray-400 rounded-full;
+    animation: typing-pulse 1.4s infinite ease-in-out;
+    
+    &:nth-child(1) { animation-delay: -0.32s; }
+    &:nth-child(2) { animation-delay: -0.16s; }
+    &:nth-child(3) { animation-delay: 0; }
+  }
+}
+
+@keyframes typing-pulse {
+  0%, 80%, 100% {
+    transform: scale(0.8);
+    opacity: 0.5;
+  }
+  40% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+// Chat Input
+.chat-input-form {
+  @apply p-4 border-t border-gray-200 dark:border-gray-700;
+}
+
+.input-group {
+  @apply flex gap-2;
+}
+
+.chat-input {
+  @apply flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg 
+         focus:ring-2 focus:ring-primary-500 focus:border-transparent
+         bg-white dark:bg-gray-700 text-gray-900 dark:text-white
+         transition-colors duration-200;
+         
+  &:disabled {
+    @apply opacity-50 cursor-not-allowed;
+  }
+}
+
+.send-button {
+  @apply px-4 py-2 bg-primary-500 text-white rounded-lg 
+         hover:bg-primary-600 focus:ring-2 focus:ring-primary-500 focus:ring-offset-2
+         disabled:opacity-50 disabled:cursor-not-allowed
+         transition-all duration-200;
+}
+
+// Sidebar Components
+.quick-actions,
+.ai-insights {
+  @apply bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6;
+}
+
+.section-title {
+  @apply text-lg font-semibold text-gray-900 dark:text-white mb-4;
+}
+
+// Quick Actions
+.action-buttons {
+  @apply space-y-2;
+}
+
+.action-button {
+  @apply w-full text-left px-4 py-3 bg-gray-50 dark:bg-gray-700 
+         hover:bg-gray-100 dark:hover:bg-gray-600 rounded-lg 
+         text-gray-900 dark:text-white transition-colors duration-200
+         focus:ring-2 focus:ring-primary-500 focus:ring-offset-2;
+}
+
+// AI Insights
+.insights-grid {
+  @apply space-y-4;
+}
+
+.insight-card {
+  @apply flex gap-3 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg
+         transition-colors duration-200;
+}
+
+.insight-icon {
+  @apply text-2xl flex-shrink-0;
+}
+
+.insight-content {
+  h4 {
+    @apply font-semibold text-gray-900 dark:text-white mb-1;
+  }
+  
+  p {
+    @apply text-sm text-gray-600 dark:text-gray-300 leading-relaxed;
+  }
+}
+
+// Responsive Design
+@media (max-width: 1024px) {
+  .assistant-content {
+    @apply grid-cols-1;
+  }
+  
+  .chat-container {
+    @apply col-span-1;
+  }
+  
+  .chat-messages {
+    @apply h-80;
+  }
+}
+
+@media (max-width: 640px) {
+  .ai-assistant-container {
+    @apply p-4;
+  }
+  
+  .page-title {
+    @apply text-2xl;
+  }
+  
+  .assistant-content {
+    @apply gap-4;
+  }
+  
+  .message-content {
+    @apply max-w-none;
+  }
+  
+  .input-group {
+    @apply flex-col gap-2;
+  }
+  
+  .send-button {
+    @apply w-full;
+  }
+}
+
+// High Contrast Mode (Accessibility)
+@media (prefers-contrast: high) {
+  .chat-input {
+    @apply border-2 border-black dark:border-white;
+  }
+  
+  .send-button {
+    @apply bg-black dark:bg-white text-white dark:text-black;
+  }
+  
+  .action-button {
+    @apply border border-gray-600 dark:border-gray-300;
+  }
+}
+
+// Reduced Motion (Accessibility)
+@media (prefers-reduced-motion: reduce) {
+  .typing-indicator span {
+    animation: none;
+    @apply opacity-70;
+  }
+  
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+} 

@@ -1,0 +1,142 @@
+<div class="register-container">
+  <div class="register-card">
+    <header class="register-header">
+      <h1 class="register-title">Create Account</h1>
+      <p class="register-subtitle">Start your ADHD productivity journey</p>
+    </header>
+
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="register-form">
+      <!-- Name Fields -->
+      <div class="name-fields">
+        <div class="form-group">
+          <label for="firstName" class="form-label">First Name</label>
+          <input
+            id="firstName"
+            type="text"
+            formControlName="firstName"
+            class="form-input"
+            [class.error]="getFieldError('firstName')"
+            placeholder="John"
+            autocomplete="given-name">
+          @if (getFieldError('firstName'); as error) {
+            <div class="error-message" role="alert">{{ error }}</div>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="lastName" class="form-label">Last Name</label>
+          <input
+            id="lastName"
+            type="text"
+            formControlName="lastName"
+            class="form-input"
+            [class.error]="getFieldError('lastName')"
+            placeholder="Doe"
+            autocomplete="family-name">
+          @if (getFieldError('lastName'); as error) {
+            <div class="error-message" role="alert">{{ error }}</div>
+          }
+        </div>
+      </div>
+
+      <!-- Email -->
+      <div class="form-group">
+        <label for="email" class="form-label">Email</label>
+        <input
+          id="email"
+          type="email"
+          formControlName="email"
+          class="form-input"
+          [class.error]="getFieldError('email')"
+          placeholder="john@example.com"
+          autocomplete="email">
+        @if (getFieldError('email'); as error) {
+          <div class="error-message" role="alert">{{ error }}</div>
+        }
+      </div>
+
+      <!-- Password -->
+      <div class="form-group">
+        <label for="password" class="form-label">Password</label>
+        <div class="password-field">
+          <input
+            id="password"
+            [type]="showPassword() ? 'text' : 'password'"
+            formControlName="password"
+            class="form-input"
+            [class.error]="getFieldError('password')"
+            placeholder="Enter password"
+            autocomplete="new-password">
+          <button
+            type="button"
+            class="password-toggle"
+            (click)="onTogglePasswordVisibility()"
+            [attr.aria-label]="showPassword() ? 'Hide password' : 'Show password'">
+            {{ showPassword() ? '🙈' : '👁️' }}
+          </button>
+        </div>
+        @if (getFieldError('password'); as error) {
+          <div class="error-message" role="alert">{{ error }}</div>
+        }
+      </div>
+
+      <!-- Confirm Password -->
+      <div class="form-group">
+        <label for="confirmPassword" class="form-label">Confirm Password</label>
+        <input
+          id="confirmPassword"
+          [type]="showPassword() ? 'text' : 'password'"
+          formControlName="confirmPassword"
+          class="form-input"
+          [class.error]="getFieldError('confirmPassword')"
+          placeholder="Confirm password"
+          autocomplete="new-password">
+        @if (getFieldError('confirmPassword'); as error) {
+          <div class="error-message" role="alert">{{ error }}</div>
+        }
+      </div>
+
+      <!-- Terms Agreement -->
+      <div class="form-group checkbox-group">
+        <label class="checkbox-label">
+          <input
+            type="checkbox"
+            formControlName="agreeToTerms"
+            class="checkbox-input">
+          <span class="checkbox-text">
+            I agree to the <a href="#" class="link">Terms of Service</a> and 
+            <a href="#" class="link">Privacy Policy</a>
+          </span>
+        </label>
+        @if (getFieldError('agreeToTerms'); as error) {
+          <div class="error-message" role="alert">{{ error }}</div>
+        }
+      </div>
+
+      <!-- Submit Button -->
+      <button
+        type="submit"
+        class="submit-button"
+        [disabled]="isLoading() || registerForm.invalid">
+        @if (isLoading()) {
+          <span class="loading-spinner" aria-hidden="true"></span>
+          Creating account...
+        } @else {
+          Create Account
+        }
+      </button>
+    </form>
+
+    <footer class="register-footer">
+      <div class="login-prompt">
+        <span>Already have an account? </span>
+        <button
+          type="button"
+          class="link-button primary"
+          (click)="onNavigateToLogin()">
+          Sign in
+        </button>
+      </div>
+    </footer>
+  </div>
+</div> 
